@@ -7,7 +7,7 @@ import { Progress } from "./ui/progress";
 
 export default function HomePage() {
   const router = useRouter();
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const [id, setId] = useState(""); // Add this line

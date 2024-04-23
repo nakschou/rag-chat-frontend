@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, JSX, SVGProps } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
@@ -14,14 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function ChatRoom({ params }) {
+export default function ChatRoom({ params }: { params: {id:string}}) {
   const router = useRouter();
 
   const url_start = process.env.NEXT_PUBLIC_MY_API_ENDPOINT;
   // State to hold messages
   const [messages, setMessages] = useState([]);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false); // State to hold loading status
-  const messagesEndRef = useRef(null); // Create a ref for the messages container
+  const messagesEndRef = useRef<HTMLElement | null>(null);
   const [value, setValue] = useState("");
 
   // Scroll to the bottom function
@@ -65,7 +65,7 @@ export default function ChatRoom({ params }) {
       })
       .then((data) => {
         //convert data.messages strings to objects
-        data.messages = data.messages.map((message) => {
+        data.messages = data.messages.map((message: string) => {
           return JSON.parse(message);
         });
         setMessages(data.messages);
@@ -82,7 +82,7 @@ export default function ChatRoom({ params }) {
   }, []);
 
   // Function to handle message submission
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault(); // Prevent default form submission behavior
     setNewMessage(""); // Clear the message input after sending
 
@@ -144,7 +144,7 @@ export default function ChatRoom({ params }) {
               <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 Chatroom ID: {id}
               </div>
-              <DropdownMenu className="justify-end">
+              <DropdownMenu>
                 <DropdownMenuTrigger className="bg-gray-100 px-3 rounded-lg justify-end">
                   {value ? value : "Voices"}
                 </DropdownMenuTrigger>
@@ -173,8 +173,8 @@ export default function ChatRoom({ params }) {
               </DropdownMenu>
             </div>
             <div className="p-4 flex flex-col gap-2">
-              {Object.keys(messages).map((messageId) => {
-                const message = messages[messageId];
+              {Object.keys(messages).map((messageId: string) => {
+                const message = (messages as {[key: string]: any})[messageId];
                 const user = message.user;
                 return (
                   <div
@@ -247,7 +247,7 @@ export default function ChatRoom({ params }) {
   );
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
