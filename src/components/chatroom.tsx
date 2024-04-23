@@ -117,10 +117,11 @@ export default function ChatRoom({ params }) {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ "query": newMessage, "id": id, "voice": value }),
+              body: JSON.stringify({"query": newMessage, "id": id, "voice": value}),
             });
           })
           .then(response => {
+            console.log(response)
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
